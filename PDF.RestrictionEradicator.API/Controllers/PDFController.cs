@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using iText.Forms;
@@ -7,9 +8,9 @@ using iText.Kernel.Pdf;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using PDF.RestrictionEradicator.API.Model;
+using PDF.Smasher.API.Model;
 
-namespace PDF.RestrictionEradicator.API.Controllers
+namespace PDF.Smasher.API.Controllers
 {
     [Authorize]
     [ApiController]
@@ -41,23 +42,33 @@ namespace PDF.RestrictionEradicator.API.Controllers
         }
 
         [HttpPost]
-        public async Task<StatusCodeResult> Post(PDFDetails pdf)
+        public async Task<StatusCodeResult> Post(PDFFlattenRequest pdfObject)
         {
-            PdfDocument pdfDoc = new PdfDocument(new PdfWriter(pdf.dest).SetSmartMode(true));
-            PdfDocument srcDoc = new PdfDocument(new PdfReader(pdf.src));
-            srcDoc.CopyPagesTo(1, srcDoc.GetNumberOfPages(), pdfDoc);
+            foreach (var pdf in pdfObject.PDFRequest)
+            {
+                var workStream = new MemoryStream();
 
-            //PdfDocument pdfDoc = new PdfDocument(new PdfReader(SRC), new PdfWriter(DEST));
-            //PdfAcroForm form = PdfAcroForm.GetAcroForm(pdfDoc, true);
+                PdfDocument pdfDoc = new PdfDocument(new PdfWriter(workStream).SetSmartMode(true));
+                PdfDocument srcDoc = new PdfDocument(new PdfReader(pdf.src));
+                srcDoc.CopyPagesTo(1, srcDoc.GetNumberOfPages(), pdfDoc);
 
-            //// If no fields have been explicitly included, then all fields are flattened.
-            //// Otherwise only the included fields are flattened.
-            //form.FlattenFields();
+                //PdfDocument pdfDoc = new PdfDocument(new PdfReader(SRC), new PdfWriter(DEST));
+                //PdfAcroForm form = PdfAcroForm.GetAcroForm(pdfDoc, true);
 
-            srcDoc.Close();
-            pdfDoc.Close();
+                //// If no fields have been explicitly included, then all fields are flattened.
+                //// Otherwise only the included fields are flattened.
+                //form.FlattenFields();
+                
+                workStream.Seek(0, SeekOrigin.Begin);
+
+                pdf.dest = workStream;
+
+                srcDoc.Close();
+                pdfDoc.Close();
+            }
 
             return Ok();
         }
+
     }
 }
