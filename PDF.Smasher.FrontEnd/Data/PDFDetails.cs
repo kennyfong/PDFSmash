@@ -4,12 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PDF.Smasher.API.Model
+namespace PDF.Smasher.FrontEnd.Data
 {
     public class PDFDetails
     {
-        public string src { get; set; }
+        public Stream src { get; set; }
 
-        public string dest { get; set; }
+        public Stream dest { get; set; }
     }
 }

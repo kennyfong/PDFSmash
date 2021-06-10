@@ -7,6 +7,6 @@ namespace PDF.Smasher.FrontEnd.Services
 {
     public interface IPDFService
     {
-        Task RemoveCertFromPDF(BlazorInputFile.IFileListEntry files);
+        Task<byte[]> RemoveCertFromPDF(BlazorInputFile.IFileListEntry file);
     }
 }

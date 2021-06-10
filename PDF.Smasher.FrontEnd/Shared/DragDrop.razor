@@ -3,8 +3,6 @@
 @inject IJSRuntime jsRuntime
 @inject IPDFService PDFService
 
-<h3>DragDrop</h3>
-
 <div class="row">
     <div class="col-12 p-0">
         <div class="dropzone @dropClass rounded">
@@ -108,6 +106,23 @@
 
     private async Task RemoveCert()
     {
-        await PDFService.RemoveCertFromPDF(selectedFiles);
+        var res = await jsRuntime.InvokeAsync<bool>("confirm", "Are you sure?");
+        if (res == false) return;
+
+        foreach (var file in selectedFiles)
+        {
+            var result = await PDFService.RemoveCertFromPDF(file);
+            await jsRuntime.InvokeVoidAsync(
+          "downloadFromByteArray",
+          new
+          {
+              ByteArray = result,
+              FileName = string.Concat("SMASHED_" + file.Name),
+              ContentType = "application/pdf"
+          });
+        }
+
+        selectedFiles = new List<IFileListEntry>();
     }
+
 }

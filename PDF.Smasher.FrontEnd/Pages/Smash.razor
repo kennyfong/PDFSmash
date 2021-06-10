@@ -1,10 +1,26 @@
-﻿@page "/smash"
+﻿@page "/"
 
+    <h3>Smash</h3>
 
-<h3>Smash</h3>
+    <DragDrop />
 
-<DragDrop />
+    @code {
+        //[CascadingParameter] public IModalService Modal { get; set; }
 
-@code {
-    
-}
+        //protected override async Task OnInitializedAsync()
+        //{
+        //    var moviesModal = Modal.Show<Smash>("My Movies");
+        //    var result = await moviesModal.Result;
+
+        //    if (result.Cancelled)
+        //    {
+        //        Console.WriteLine("Modal was cancelled");
+        //    }
+        //    else
+        //    {
+        //        Console.WriteLine("Modal was closed");
+        //    }
+
+        //}
+
+    }

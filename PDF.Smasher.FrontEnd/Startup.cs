@@ -1,3 +1,4 @@
+using Blazored.Modal;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
@@ -29,6 +30,7 @@ namespace PDF.Smasher.FrontEnd
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddBlazoredModal();
             services.AddSingleton<WeatherForecastService>();
             services.AddScoped<IPDFService, PDFService>();
 
