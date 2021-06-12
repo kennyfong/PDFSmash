@@ -13,7 +13,8 @@
     <title>PDF.Smasher.FrontEnd</title>
     <base href="~/" />
     <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
-    <link href="_content/Blazored.Modal/blazored-modal.css" rel="stylesheet" />
+    <script src="_content/MatBlazor/dist/matBlazor.js"></script>
+    <link href="_content/MatBlazor/dist/matBlazor.css" rel="stylesheet" />
     <link href="css/site.css" rel="stylesheet" />
     <link href="PDF.Smasher.FrontEnd.styles.css" rel="stylesheet" />
     <script src="_content/BlazorInputFile/inputfile.js"></script>
@@ -32,8 +33,19 @@
         <a class="dismiss">🗙</a>
     </div>
 
+
+    <script src="_framework/blazor.polyfill.min.js"></script>
     <script src="_framework/blazor.server.js"></script>
-    <script src ="_content/Blazored.Modal/blazored.modal.js"></script>
+
     <script src="~/script/app.js"></script>
+
+    <script>
+        var ua = window.navigator.userAgent;
+        var isIE = /MSIE|Trident/.test(ua);
+
+        if (isIE) {
+            alert("Internet Explorer browser is not supported. Please use a more modern browser like Google Chrome, Microsoft Edge, Mozilla Firefox, Opera, Safari, etc.");
+        }
+    </script>
 </body>
 </html>

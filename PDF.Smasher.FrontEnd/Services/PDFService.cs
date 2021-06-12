@@ -34,16 +34,22 @@ namespace PDF.Smasher.FrontEnd.Services
                     var stream = new StreamContent(ms);
 
                     var response = await client.PostAsync("PDF", stream);
+                    response.EnsureSuccessStatusCode();
+
                     using (var outputms = new MemoryStream())
                     {
-                        await response.Content.CopyToAsync(ms);
-                        return ms.ToArray();
+                        await response.Content.CopyToAsync(outputms);
+                        return outputms.ToArray();
                     }
                 }
             }
+            catch(HttpRequestException httpEx)
+            {
+                throw;
+            }
             catch(Exception ex)
             {
-
+                throw;
             }
             return null;
         }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using iText.Forms;
 using iText.Kernel.Pdf;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PDF.Smasher.API.Model;
@@ -13,6 +14,7 @@ using PDF.Smasher.API.Model;
 namespace PDF.Smasher.API.Controllers
 {
     [ApiController]
+    [EnableCors]
     [Route("[controller]")]
     public class PDFController : ControllerBase
     {
@@ -23,7 +25,6 @@ namespace PDF.Smasher.API.Controllers
             _logger = logger;
         }
 
-        [AllowAnonymous]
         [ProducesResponseType(typeof(FileStreamResult), 200)]
         [HttpPost]
         public async Task<IActionResult> Post()
@@ -52,7 +53,8 @@ namespace PDF.Smasher.API.Controllers
                 return new FileStreamResult(outputStream, mimeType);
             } catch(Exception ex)
             {
-
+                _logger.LogError(ex, "Internal Server error");
+                return StatusCode(500);
             }
             return StatusCode(500);
         }

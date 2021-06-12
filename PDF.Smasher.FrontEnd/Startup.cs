@@ -1,4 +1,5 @@
-using Blazored.Modal;
+using Blazor.Polyfill.Server;
+using MatBlazor;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PDF.Smasher.FrontEnd.Data;
 using PDF.Smasher.FrontEnd.Services;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,14 +32,20 @@ namespace PDF.Smasher.FrontEnd
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddBlazoredModal();
+            services.AddMatBlazor();
             services.AddSingleton<WeatherForecastService>();
             services.AddScoped<IPDFService, PDFService>();
+            services.AddBlazorPolyfill();
 
             var config = new PDFServiceAPIConfiguration();
             Configuration.Bind("PDFService", config);      //  <--- This
             services.AddSingleton(config);
 
+            var logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(Configuration)
+                .CreateLogger();
+
+            services.AddScoped<Serilog.ILogger>(l => { return logger; });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,8 +63,9 @@ namespace PDF.Smasher.FrontEnd
             }
 
             app.UseHttpsRedirection();
+            app.UseBlazorPolyfill();
             app.UseStaticFiles();
-
+        
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>

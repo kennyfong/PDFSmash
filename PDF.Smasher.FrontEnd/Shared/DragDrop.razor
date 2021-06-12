@@ -45,17 +45,55 @@
 
 
             <button class="btn btn-primary" @onclick="RemoveCert">Smash</button>
+
         }
     </div>
 </div>
 
+<MatDialog @bind-IsOpen="@dialogIsOpen">
+    <MatDialogTitle>Confirmation</MatDialogTitle>
+    <MatDialogContent>
+        <p>Are you sure?</p>
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="@(e => { dialogIsOpen = false; })">No</MatButton>
+        <MatButton OnClick="@OkClick">Yes</MatButton>
+    </MatDialogActions>
+</MatDialog>
+
+<MatDialog @bind-IsOpen="@completeDialogIsOpen">
+    <MatDialogTitle>Complete</MatDialogTitle>
+    <MatDialogContent>
+        <p>PDF Document Transformation Complete</p>
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="@(e => { completeDialogIsOpen = false; })">OK</MatButton>
+    </MatDialogActions>
+</MatDialog>
+
+<MatDialog @bind-IsOpen="@errorDialogIsOpen">
+    <MatDialogTitle>Error</MatDialogTitle>
+    <MatDialogContent>
+        <p>An error has occurred</p>
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="@(e => { errorDialogIsOpen = false; })">OK</MatButton>
+    </MatDialogActions>
+</MatDialog>
+
+
+
 @code {
+
     const int MaxFileSizeMB = 5;
     const int MaxFileSize = MaxFileSizeMB * 1024 * 1024; // 5MB
     private string dropClass = "";
     private bool fileSizeError = false;
     private bool fileTypeError = false;
     private List<IFileListEntry> selectedFiles = new List<IFileListEntry>();
+    bool dialogIsOpen = false;
+    bool completeDialogIsOpen = false;
+    bool errorDialogIsOpen = false;
 
     private void HandleDragEnter()
     {
@@ -104,25 +142,39 @@
         selectedFiles.Remove(file);
     }
 
+    private async Task OkClick()
+    {
+        dialogIsOpen = false;
+
+        try
+        {
+            foreach (var file in selectedFiles)
+            {
+                var result = await PDFService.RemoveCertFromPDF(file);
+                await jsRuntime.InvokeVoidAsync(
+              "downloadFromByteArray",
+              new
+              {
+                  ByteArray = result,
+                  FileName = string.Concat("SMASHED_" + file.Name),
+                  ContentType = "application/pdf"
+              });
+            }
+
+            completeDialogIsOpen = true;
+
+            selectedFiles = new List<IFileListEntry>();
+        } catch(Exception ex)
+        {
+            errorDialogIsOpen = true;
+        }
+    }
+
     private async Task RemoveCert()
     {
-        var res = await jsRuntime.InvokeAsync<bool>("confirm", "Are you sure?");
-        if (res == false) return;
+        dialogIsOpen = true;
 
-        foreach (var file in selectedFiles)
-        {
-            var result = await PDFService.RemoveCertFromPDF(file);
-            await jsRuntime.InvokeVoidAsync(
-          "downloadFromByteArray",
-          new
-          {
-              ByteArray = result,
-              FileName = string.Concat("SMASHED_" + file.Name),
-              ContentType = "application/pdf"
-          });
-        }
 
-        selectedFiles = new List<IFileListEntry>();
     }
 
 }

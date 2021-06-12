@@ -4,23 +4,20 @@
 
     <DragDrop />
 
+    <MatDialog @bind-IsOpen="@tutorialDialogIsOpen">
+        <MatDialogTitle>How to upload PDF and Smash</MatDialogTitle>
+        <MatDialogContent>
+            <ol>
+                <li>Drag and drop the PDF onto the designated box</li>
+                <li>Press Smash button</li>
+            </ol>
+        </MatDialogContent>
+        <MatDialogActions>
+            <MatButton OnClick="@(e => { tutorialDialogIsOpen = false; })">OK</MatButton>
+        </MatDialogActions>
+    </MatDialog>
+
     @code {
-        //[CascadingParameter] public IModalService Modal { get; set; }
-
-        //protected override async Task OnInitializedAsync()
-        //{
-        //    var moviesModal = Modal.Show<Smash>("My Movies");
-        //    var result = await moviesModal.Result;
-
-        //    if (result.Cancelled)
-        //    {
-        //        Console.WriteLine("Modal was cancelled");
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine("Modal was closed");
-        //    }
-
-        //}
+        bool tutorialDialogIsOpen = true;
 
     }

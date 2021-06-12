@@ -11,11 +11,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using PDF.Smasher.API.Model;
+using Serilog;
 
 namespace PDF.RestrictionEradicator.API
 {
     public class Startup
     {
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -41,6 +45,29 @@ namespace PDF.RestrictionEradicator.API
             {
                 options.AllowSynchronousIO = true;
             });
+
+            var applicationSettings = Configuration.GetSection("AppSettings");
+            services.Configure<ApplicationSettings>(applicationSettings);
+
+            var appSettings = applicationSettings.Get<ApplicationSettings>();
+
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins,
+                                  builder =>
+                                  {
+                                      builder.WithOrigins(appSettings.AllowedOriginsList)
+                                                          .AllowAnyHeader()
+                                                          .AllowAnyMethod();
+                                  });
+            });
+
+            var logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(Configuration)
+                .CreateLogger();
+
+            services.AddScoped<Serilog.ILogger>(l => { return logger; });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,6 +89,8 @@ namespace PDF.RestrictionEradicator.API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseAuthorization();
 
