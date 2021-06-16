@@ -12,11 +12,8 @@ namespace PDF.Smasher.FrontEnd.Services
 {
     public class PDFService : IPDFService
     {
-        private readonly PDFServiceAPIConfiguration _config;
-
-        public PDFService(PDFServiceAPIConfiguration config)
+        public PDFService()
         {
-            _config = config ?? throw new ArgumentNullException(nameof(config));
         }
 
         public async Task<byte[]> RemoveCertFromPDF(BlazorInputFile.IFileListEntry file)
@@ -25,7 +22,7 @@ namespace PDF.Smasher.FrontEnd.Services
             {
                 using (HttpClient client = new HttpClient(new HttpClientHandler { UseDefaultCredentials = true }))
                 {
-                    client.BaseAddress = new Uri(_config.BaseURL);
+                    client.BaseAddress = new Uri(Environment.GetEnvironmentVariable("API_HOST"));
 
                     var ms = new MemoryStream();
                     await file.Data.CopyToAsync(ms);
@@ -51,7 +48,6 @@ namespace PDF.Smasher.FrontEnd.Services
             {
                 throw;
             }
-            return null;
         }
     }
 }

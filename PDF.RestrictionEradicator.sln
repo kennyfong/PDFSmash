@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PDF.RestrictionEradicator", "PDF.RestrictionEradicator\PDF.RestrictionEradicator.csproj", "{57FFDF4B-D402-43F5-AEC8-2001B1DADD43}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PDF.Smasher.API", "PDF.RestrictionEradicator.API\PDF.Smasher.API.csproj", "{CC32F156-258A-4D07-8809-9BB4D5D1FBEC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PDF.Smasher.FrontEnd", "PDF.Smasher.FrontEnd\PDF.Smasher.FrontEnd.csproj", "{865CCB3A-F663-4BD7-84CE-3586FF057A31}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{4AC5F669-9FA5-4B59-A106-872F734373CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,10 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{57FFDF4B-D402-43F5-AEC8-2001B1DADD43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{57FFDF4B-D402-43F5-AEC8-2001B1DADD43}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{57FFDF4B-D402-43F5-AEC8-2001B1DADD43}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{57FFDF4B-D402-43F5-AEC8-2001B1DADD43}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CC32F156-258A-4D07-8809-9BB4D5D1FBEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CC32F156-258A-4D07-8809-9BB4D5D1FBEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC32F156-258A-4D07-8809-9BB4D5D1FBEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -27,6 +23,10 @@ Global
 		{865CCB3A-F663-4BD7-84CE-3586FF057A31}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{865CCB3A-F663-4BD7-84CE-3586FF057A31}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{865CCB3A-F663-4BD7-84CE-3586FF057A31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AC5F669-9FA5-4B59-A106-872F734373CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AC5F669-9FA5-4B59-A106-872F734373CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AC5F669-9FA5-4B59-A106-872F734373CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AC5F669-9FA5-4B59-A106-872F734373CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -7,16 +7,16 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
-COPY ["PDF.Smasher.FrontEnd/PDF.Smasher.FrontEnd.csproj", "PDF.Smasher.FrontEnd/"]
-RUN dotnet restore "PDF.Smasher.FrontEnd/PDF.Smasher.FrontEnd.csproj"
+COPY ["PDF.RestrictionEradicator.API/PDF.Smasher.API.csproj", "PDF.RestrictionEradicator.API/"]
+RUN dotnet restore "PDF.RestrictionEradicator.API/PDF.Smasher.API.csproj"
 COPY . .
-WORKDIR "/src/PDF.Smasher.FrontEnd"
-RUN dotnet build "PDF.Smasher.FrontEnd.csproj" -c Release -o /app/build
+WORKDIR "/src/PDF.RestrictionEradicator.API"
+RUN dotnet build "PDF.Smasher.API.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "PDF.Smasher.FrontEnd.csproj" -c Release -o /app/publish
+RUN dotnet publish "PDF.Smasher.API.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "PDF.Smasher.FrontEnd.dll"]
+ENTRYPOINT ["dotnet", "PDF.Smasher.API.dll"]

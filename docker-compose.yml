@@ -1,0 +1,41 @@
+version: '3.4'
+
+services:
+  pdf.smasher.frontend:
+    image: ${DOCKER_REGISTRY-}pdfsmasherfrontend
+    environment:
+      -  API_HOST=https://pdf.smasher.api:8081/
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_HTTPS_PORT=9000
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=mypass123
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+    ports:
+      - "9000:443"
+      - "9001:80"
+    volumes:
+        - ./pdf.smasher.frontend/https/aspnetapp.pfx:/https/aspnetapp.pfx:ro
+    build:
+      context: .
+      dockerfile: PDF.Smasher.FrontEnd\Dockerfile
+    depends_on:
+      - pdf.smasher.api
+    container_name: pdf.smasher.frontend
+
+  pdf.smasher.api:
+    image: ${DOCKER_REGISTRY-}pdfsmasherapi
+    ports:
+      - "8080:80" 
+      - "8081:443" 
+    build:
+      context: .
+      dockerfile: PDF.RestrictionEradicator.API\Dockerfile
+    container_name: pdf.smasher.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_HTTPS_PORT=8081
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=mypass123
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+    volumes:
+        - ./PDF.RestrictionEradicator.API/https/aspnetapp.pfx:/https/aspnetapp.pfx:ro

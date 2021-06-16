@@ -3,7 +3,8 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <UserSecretsId>efec1895-20b6-49d1-8d8c-f0e7032b4fd0</UserSecretsId>
-    <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,6 +23,16 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="wwwroot\script\app.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="https\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="https\aspnetapp.pfx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

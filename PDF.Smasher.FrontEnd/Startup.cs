@@ -30,6 +30,10 @@ namespace PDF.Smasher.FrontEnd
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            var config = new ConfigurationBuilder()
+            .AddEnvironmentVariables()
+            .Build();
+
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddMatBlazor();
@@ -37,8 +41,8 @@ namespace PDF.Smasher.FrontEnd
             services.AddScoped<IPDFService, PDFService>();
             services.AddBlazorPolyfill();
 
-            var config = new PDFServiceAPIConfiguration();
-            Configuration.Bind("PDFService", config);      //  <--- This
+            //var config = new PDFServiceAPIConfiguration();
+            //Configuration.Bind("PDFService", config);      //  <--- This
             services.AddSingleton(config);
 
             var logger = new LoggerConfiguration()
