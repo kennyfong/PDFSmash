@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using PDF.Smasher.FrontEnd.Data;
 using PDF.Smasher.FrontEnd.Services;
 using Serilog;
@@ -35,7 +36,7 @@ namespace PDF.Smasher.FrontEnd
             .Build();
 
             services.AddRazorPages();
-            services.AddServerSideBlazor();
+            services.AddServerSideBlazor().AddCircuitOptions(options => { options.DetailedErrors = true; }); ;
             services.AddMatBlazor();
             services.AddSingleton<WeatherForecastService>();
             services.AddScoped<IPDFService, PDFService>();
@@ -53,7 +54,7 @@ namespace PDF.Smasher.FrontEnd
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -77,6 +78,7 @@ namespace PDF.Smasher.FrontEnd
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
+            app.UseSerilogRequestLogging();
         }
     }
 }

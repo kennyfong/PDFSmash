@@ -1,4 +1,6 @@
-﻿using PDF.Smasher.FrontEnd.Data;
+﻿using Microsoft.Extensions.Logging;
+using PDF.Smasher.FrontEnd.Data;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,14 +14,18 @@ namespace PDF.Smasher.FrontEnd.Services
 {
     public class PDFService : IPDFService
     {
-        public PDFService()
+        private readonly ILogger<PDFService> _logger;
+
+        public PDFService(ILogger<PDFService> logger)
         {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task<byte[]> RemoveCertFromPDF(BlazorInputFile.IFileListEntry file)
         {
             try
             {
+                _logger.LogInformation("Removing Certificate from PDF");
                 using (HttpClient client = new HttpClient(new HttpClientHandler { UseDefaultCredentials = true }))
                 {
                     client.BaseAddress = new Uri(Environment.GetEnvironmentVariable("API_HOST"));
@@ -42,10 +48,12 @@ namespace PDF.Smasher.FrontEnd.Services
             }
             catch(HttpRequestException httpEx)
             {
+                _logger.LogError(httpEx,"HTTP Exception occurred");
                 throw;
             }
             catch(Exception ex)
             {
+                _logger.LogError(ex, "Internal Exception occurred");
                 throw;
             }
         }

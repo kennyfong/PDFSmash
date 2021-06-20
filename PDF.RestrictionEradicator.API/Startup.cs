@@ -98,6 +98,8 @@ namespace PDF.RestrictionEradicator.API
             {
                 endpoints.MapControllers();
             });
+
+            app.UseSerilogRequestLogging();
         }
     }
 }
