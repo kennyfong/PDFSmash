@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PDF.Smasher.FrontEnd", "PDF
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{4AC5F669-9FA5-4B59-A106-872F734373CC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PDF.Smasher.SpecFlow", "PDF.Smasher.SpecFlow\PDF.Smasher.SpecFlow.csproj", "{CC9FD2F4-3B02-47F4-85F9-BDE7BA9C6414}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{4AC5F669-9FA5-4B59-A106-872F734373CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4AC5F669-9FA5-4B59-A106-872F734373CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4AC5F669-9FA5-4B59-A106-872F734373CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC9FD2F4-3B02-47F4-85F9-BDE7BA9C6414}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC9FD2F4-3B02-47F4-85F9-BDE7BA9C6414}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC9FD2F4-3B02-47F4-85F9-BDE7BA9C6414}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC9FD2F4-3B02-47F4-85F9-BDE7BA9C6414}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
